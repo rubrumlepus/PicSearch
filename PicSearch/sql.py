@@ -4,7 +4,7 @@
 import json
 import psycopg2
 
-with open('config.json') as config_file:
+with open('PicSearch\config.json') as config_file:
     config = json.load(config_file)
     db_name = config['database']['database_name']
     db_user = config['database']['user']
@@ -101,6 +101,18 @@ def connect_tag_to_image(image_id, tag_id):
         print(f"Произошла ошибка: {e}")
 
 
+def disconnect_tag_from_image(image_id, tag_id):
+    try:
+        delete_query = "DELETE FROM image_tags WHERE image_id = (%s) AND tag_id = (%s)"
+        cursor.execute(delete_query, (image_id, tag_id, ))
+
+        connection.commit()
+        print("Тег отвязан от изображения.")
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+
 def check_path(image_path):
     """
     Проверяет, существует ли переданный путь к изображению в базе данных.
@@ -178,6 +190,34 @@ def get_tags_for_image(image_id):
             tag_name = cursor.fetchone()
             if tag_name:
                 tags.append(tag_name[0])
+
+        return tags
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+
+def get_images():
+    try:
+        select_query = "SELECT image_path FROM images"
+        cursor.execute(select_query)
+        images = cursor.fetchall()
+
+        return images
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+
+def get_tags():
+    try:
+        select_query = "SELECT tag_name FROM tags"
+        cursor.execute(select_query)
+        cursor_tags = cursor.fetchall()
+
+        tags = []
+        for tag in cursor_tags:
+            tags.append(tag[0])
 
         return tags
 

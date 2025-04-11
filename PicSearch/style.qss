@@ -1,0 +1,22 @@
+QFrame#TagFrame {
+    background-color:rgb(235, 208, 255);
+    border-radius: 12px;
+    padding: 2px;
+}
+
+QLabel#TagText {
+    font-size: 12px;
+    color: rgb(49, 5, 66)
+}
+
+QPushButton#RemoveButton {
+    border: none;
+    color: #7c7676;
+    background: transparent;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QPushButton#RemoveButton:hover {
+    color: black;
+}
